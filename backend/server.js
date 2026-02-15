@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from 'cors';
 import connectDB from "./config/mongo.config.js";
+import frameworkRoutes from "./routes/framework.routes.js"
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ app.use(express.json());
 app.get("/", (req, res)=>{
     res.json({message : "Dev Boilerplate Hub API is running"});
 })
+
+app.use("/api/frameworks", frameworkRoutes);
 
 app.listen(process.env.PORT, ()=>{
     connectDB();

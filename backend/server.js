@@ -2,7 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from 'cors';
 import connectDB from "./config/mongo.config.js";
-import frameworkRoutes from "./routes/framework.routes.js"
+import frameworkRoutes from "./routes/framework.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.get("/", (req, res)=>{
 })
 
 app.use("/api/frameworks", frameworkRoutes);
+app.use("/api/frameworks", categoryRoutes);
 
 app.listen(process.env.PORT, ()=>{
     connectDB();

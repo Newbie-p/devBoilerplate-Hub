@@ -3,7 +3,8 @@ import { getSnippetByFrameworkAndCategory, getSnippetDetail } from "../controlle
 
 const router = express.Router();
 
-router.get("/:frameworkSlug/:categorySlug/:integrationSlug", getSnippetDetail);
+
 router.get("/:frameworkSlug/:categorySlug/snippets", getSnippetByFrameworkAndCategory);
+router.get("/:frameworkSlug/:categorySlug/:integrationSlug", getSnippetDetail);
 
 export default router;

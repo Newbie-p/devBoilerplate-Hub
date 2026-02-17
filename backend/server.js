@@ -6,6 +6,7 @@ import frameworkRoutes from "./routes/framework.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import snippetRoutes from "./routes/snippet.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 import { verifyJWT, checkRole } from "./middleware/auth.middleware.js";
 
 dotenv.config();
@@ -26,6 +27,7 @@ app.use("/api/auth", authRoutes);
 app.get("/api/protected", verifyJWT, (req, res) => {
   res.json({ message: "You are authenticated", user: req.user });
 });
+app.use("/api/admin", adminRoutes);
 
 app.listen(process.env.PORT, ()=>{
     connectDB();

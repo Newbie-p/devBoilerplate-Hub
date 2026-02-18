@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 const generateToken = (user) =>{
     return jwt.sign(
@@ -22,11 +23,13 @@ export const registerUser = async(req, res)=>{
         }
 
         const user = await User.create({name, email, password});
-        const token = generateToken(user);
+
+        const verificationToken = user.generateEmailVerificationToken();
+        await user.save();
+        // const token = generateToken(user);
 
         res.status(200).json({
-            message: "User registered successfully",
-            token,
+            message: "Registration successful. Please verify your email",
         });
     }catch(error){
         console.error("Register error: ", error);
@@ -41,6 +44,12 @@ export const loginUser = async(req, res)=>{
 
         if(!user){
             return res.status(400).json({message: "Invalid credentials"});
+        }
+
+        if(!user.isVerified){
+            return res.status(401).json({
+                message: "Please verify your email before logging in",
+            });
         }
 
         const isMatch = await user.comparePassword(password);
@@ -58,3 +67,32 @@ export const loginUser = async(req, res)=>{
         res.status(500).json({ message : "server error"});
     }
 };
+
+export const verifyEmail = async(req, res)=>{
+    try{
+        const { token } = req.params;
+
+        const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+        const user = await User.findOne({
+            emailVerifiactionToken: hashedToken,
+            emailVerifiactionExpire: {$gt: Date.now() },
+        })
+
+        if(!user){
+            return res.status(400).json({message: "Invalid or expired token"});
+        }
+
+        user.isVerified = true;
+        user.emailVerifiactionToken = undefined;
+        user.emailVerifiactionExpire = undefined;
+
+        await user.save();
+        res.status(200).json({
+            message: "Email verified successfully. You can now login.",
+        });
+    }catch(error){
+        console.error("verify email error: ", error);
+        res.status(500).json({message: "Server error"});
+    }
+}

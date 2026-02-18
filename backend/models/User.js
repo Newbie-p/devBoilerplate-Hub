@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -29,6 +30,13 @@ const userSchema = new mongoose.Schema({
         enum: ["local", "google"],
         default: "local",
     },
+    isVerified:{
+        type: Boolean,
+        default: false,
+    },
+
+    emailVerifiactionToken: String,
+    emailVerifiactionExpire: Date,
 }, {timestamps: true});
 
 userSchema.pre("save", async function () {
@@ -39,5 +47,18 @@ userSchema.pre("save", async function () {
 userSchema.methods.comparePassword = async function(candidatePassword){
     return bcrypt.compare(candidatePassword, this.password);
 };
+
+userSchema.methods.generateEmailVerificationToken = function(){
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+
+    this.emailVerifiactionToken = crypto
+        .createHash("sha256")
+        .update(verificationToken)
+        .digest("hex");
+    
+    this.emailVerifiactionExpire = Date.now() + 24*60*60*1000; //24hrs
+
+    return verificationToken;
+}
 
 export default mongoose.model("User", userSchema);

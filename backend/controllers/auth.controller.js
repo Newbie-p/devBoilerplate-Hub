@@ -1,7 +1,8 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
+import crypto, { generateKey } from "crypto";
 import { sendEmail } from "../utils/email.js";
+import { OAuth2Client } from "google-auth-library";
 
 const generateToken = (user) =>{
     return jwt.sign(
@@ -188,3 +189,54 @@ export const resetPassword = async(req, res)=>{
     }
     
 };
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+export const googleLogin = async(req, res)=>{
+    try{
+        const {idToken} = req.body;
+
+        if(!idToken){
+            return res.status(400).json({message: "ID token is required"});
+        }
+
+        const ticket = await client.verifyIdToken({
+            idToken,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        })
+
+        const payload = ticket.getPayload();
+        const { email, name, email_verified} = payload;
+
+        if(!email_verified){
+            return res.status(400).json({message: "Google email not verified"});
+        }
+
+        let user = await User.findOne({ email });
+
+        if(!user){
+            user = await User.create({
+                name,
+                email,
+                password: crypto.randomBytes(32).toString("hex"),
+                provider: "google",
+                isVerified: true,
+            })
+        }
+
+        if(user.provider === "local"){
+            user.provider = "google";
+            user.isVerified = true;
+            await user.save();
+        }
+
+        const token = generateToken(user);
+        res.status(200).json({
+            message: "Google login successful",
+            token,
+        });
+    }catch(error){
+        console.error("Google login error:", error);
+        res.status(500).json({ message: "Google authentication failed" });
+    }
+}

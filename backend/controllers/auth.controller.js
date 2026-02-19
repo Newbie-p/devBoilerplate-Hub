@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import { sendEmail } from "../utils/email.js";
 
 const generateToken = (user) =>{
     return jwt.sign(
@@ -26,10 +27,27 @@ export const registerUser = async(req, res)=>{
 
         const verificationToken = user.generateEmailVerificationToken();
         await user.save();
-        // const token = generateToken(user);
+        
+        // build verification url
+        const verificationUrl = `${req.protocol}://${req.get(
+            "host"
+        )}/api/auth/verify-email/${verificationToken}`;
 
-        res.status(200).json({
-            message: "Registration successful. Please verify your email",
+        //send email
+        await sendEmail({
+            to: user.email,
+            subject: "verify your email",
+            html: `
+                <h2> Email Verification </h2>
+                <p>Thank you for registering. </p>
+                <p>Please click the link below to verify your email:</p>
+                <a href = "${verificationUrl}">${verificationUrl}</a>
+                <p>This link will expire in 24hours.</p>
+            `,
+        });
+
+        res.status(201).json({
+            message: "Registration successful. Please check your email to verify your account.",
         });
     }catch(error){
         console.error("Register error: ", error);

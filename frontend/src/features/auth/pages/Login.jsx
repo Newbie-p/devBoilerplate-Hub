@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../authService";
 import { useAuth } from "../authContext";
+import GoogleButton from "../components/GoogleButton";
 
 export default function Login(){
     const [form, setForm] = useState({email: "", password: ""});
@@ -49,7 +50,11 @@ export default function Login(){
                     required 
                 />
                 <button type="submit" className="w-full bg-black text-white p-2">Login</button>
+                <div className="mt-4 flex justify-center">
+                    <GoogleButton />
+                </div>
             </form>
+            
         </div>
     )
 }

@@ -7,11 +7,15 @@ import ForgotPassword from "../features/auth/pages/ForgotPassword";
 import ResetPassword from "../features/auth/pages/ResetPassword";
 import Dashboard from "../features/auth/pages/Dashboard";
 import ProtectedRoute from "../features/auth/ProtectedRoute";
+import FrameworkList from "../features/frameworks/pages/FrameworkList";
+import FrameworkDetail from "../features/frameworks/pages/FrameworkDetail";
+import SnippetList from "../features/snippets/pages/SnippetList";
+import SnippetDetail from "../features/snippets/pages/SnippetDetail";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <App />
+        element: <FrameworkList />
     },
     {
         path: "/login",
@@ -36,5 +40,17 @@ export const router = createBrowserRouter([
                 <Dashboard />
             </ProtectedRoute>
         ),
+    },
+    {
+        path: "/frameworks/:slug",
+        element: <FrameworkDetail />
+    },
+    {
+        path: "/frameworks/:slug/:categorySlug",
+        element: <SnippetList />
+    },
+    {
+        path: "/frameworks/:slug/:categorySlug/:integrationSlug",
+        element: <SnippetDetail />
     }
 ])

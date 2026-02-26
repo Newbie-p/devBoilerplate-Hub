@@ -11,46 +11,54 @@ import FrameworkList from "../features/frameworks/pages/FrameworkList";
 import FrameworkDetail from "../features/frameworks/pages/FrameworkDetail";
 import SnippetList from "../features/snippets/pages/SnippetList";
 import SnippetDetail from "../features/snippets/pages/SnippetDetail";
+import Layout from "../layout/Layout";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <FrameworkList />
+        element: <Layout />,
+        children:[
+            {
+                index: true,
+                element:<FrameworkList />
+            },
+            {
+                path: "/login",
+                element: <Login />
+            },
+            {
+                path: "/register",
+                element: <Register />
+            },
+            {
+                path: "/forgot-password",
+                element: <ForgotPassword />
+            },
+            {
+                path: "/reset-password",
+                element: <ResetPassword />
+            },
+            {
+                path: "/dashboard",
+                element: (
+                    <ProtectedRoute>
+                        <Dashboard />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: "/frameworks/:slug",
+                element: <FrameworkDetail />
+            },
+            {
+                path: "/frameworks/:slug/:categorySlug",
+                element: <SnippetList />
+            },
+            {
+                path: "/frameworks/:slug/:categorySlug/:integrationSlug",
+                element: <SnippetDetail />
+            },
+        ]
     },
-    {
-        path: "/login",
-        element: <Login />
-    },
-    {
-        path: "/register",
-        element: <Register />
-    },
-    {
-        path: "/forgot-password",
-        element: <ForgotPassword />
-    },
-    {
-        path: "/reset-password",
-        element: <ResetPassword />
-    },
-    {
-        path: "/dashboard",
-        element: (
-            <ProtectedRoute>
-                <Dashboard />
-            </ProtectedRoute>
-        ),
-    },
-    {
-        path: "/frameworks/:slug",
-        element: <FrameworkDetail />
-    },
-    {
-        path: "/frameworks/:slug/:categorySlug",
-        element: <SnippetList />
-    },
-    {
-        path: "/frameworks/:slug/:categorySlug/:integrationSlug",
-        element: <SnippetDetail />
-    }
+    
 ])

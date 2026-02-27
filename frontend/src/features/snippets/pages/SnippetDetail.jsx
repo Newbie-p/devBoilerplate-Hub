@@ -1,6 +1,7 @@
 import { getSnippetDetail } from "../snippetService";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import CodeBlock from "../../../components/CodeBlock";
 
 export default function SnippetDetail() {
   const { slug, categorySlug, integrationSlug } = useParams();
@@ -46,7 +47,7 @@ export default function SnippetDetail() {
       )}
 
       <div className="mb-6 bg-black text-green-400 p-4 rounded overflow-auto">
-        <pre>{snippet.code}</pre>
+        <CodeBlock code={snippet.code} language="javascript" />
       </div>
 
       <p className="mb-6">{snippet.explanation}</p>

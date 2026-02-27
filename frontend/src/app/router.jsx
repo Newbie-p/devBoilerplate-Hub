@@ -12,6 +12,7 @@ import FrameworkDetail from "../features/frameworks/pages/FrameworkDetail";
 import SnippetList from "../features/snippets/pages/SnippetList";
 import SnippetDetail from "../features/snippets/pages/SnippetDetail";
 import Layout from "../layout/Layout";
+import PublicRoute from "../features/auth/PublicRoute";
 
 export const router = createBrowserRouter([
     {
@@ -24,11 +25,19 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/login",
-                element: <Login />
+                element: (
+                    <PublicRoute>
+                        <Login />
+                    </PublicRoute>
+                ),
             },
             {
                 path: "/register",
-                element: <Register />
+                element:(
+                    <PublicRoute>
+                        <Register />
+                    </PublicRoute>
+                ),
             },
             {
                 path: "/forgot-password",

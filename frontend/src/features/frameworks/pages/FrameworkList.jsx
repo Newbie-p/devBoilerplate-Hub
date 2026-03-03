@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getFrameworks } from "../frameworkService";
 import { useNavigate } from "react-router-dom";
+import SkeletonCard from "../../../components/SkeletonCard";
 
 export default function FrameworkList(){
     const [frameworks, setFrameworks] = useState([]);
@@ -22,7 +23,26 @@ export default function FrameworkList(){
         fetchData();
     }, []);
 
-    if(loading) return <div className="p-10">Loading...</div>;
+    if(loading) {
+        return (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-10">
+                {[...Array(3)].map((_, i)=> (
+                    <SkeletonCard key={i} />
+                ))}
+            </div>
+        )
+    }
+
+    if(!frameworks.length){
+        return(
+            <div className="min-h-screen flex flex-col items-center justify-center text-gray-500">
+                <h2 className="text-xl font-semibold mb-2">
+                    No frameworks available yet.
+                </h2>
+                <p>Content will appear here once added.</p>
+            </div>
+        )
+    }
 
     return(
         <div className="min-h-screen p-10">

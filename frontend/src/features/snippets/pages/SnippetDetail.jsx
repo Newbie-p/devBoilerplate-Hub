@@ -2,6 +2,7 @@ import { getSnippetDetail } from "../snippetService";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import CodeBlock from "../../../components/CodeBlock";
+import SkeletonCard from "../../../components/SkeletonCard";
 
 export default function SnippetDetail() {
   const { slug, categorySlug, integrationSlug } = useParams();
@@ -28,7 +29,15 @@ export default function SnippetDetail() {
     fetchSnippet();
   }, [slug, categorySlug, integrationSlug]);
 
-  if (loading) return <div className="p-10">Loading...</div>;
+  if(loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-10">
+        {[...Array(3)].map((_, i)=> (
+          <SkeletonCard key={i} />
+        ))}
+      </div>
+    )
+  }
   if (!snippet) return <div className="p-10">Snippet not found</div>;
 
   return (

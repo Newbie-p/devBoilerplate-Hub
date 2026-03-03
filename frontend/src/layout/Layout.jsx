@@ -6,7 +6,7 @@ export default function Layout(){
     return (
         <div className="min-h-screen flex flex-col bg-gray-50">
             <Navbar />
-            <main className="flex-1 container mx-auto px-6 py-8">
+            <main className="flex-1 container mx-auto px-6 py-10 max-w-6xl">
                 <Breadcrumb />
                 <Outlet />
             </main>

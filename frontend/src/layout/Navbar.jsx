@@ -31,7 +31,12 @@ export default function Navbar(){
                         <Link to="/dashboard" className="text-gray-700 hover:text-black">
                             Dashboard
                         </Link>
-                        <button className="text-gray-700 hover:text-black">
+                        {user?.role === "admin" && (
+                            <Link to="/admin" className="text-gray-700 hover:text-black">
+                                Admin
+                            </Link>
+                        )}
+                        <button className="text-gray-700 hover:text-black" onClick={handleLogout}>
                             Logout
                         </button>
                     </>

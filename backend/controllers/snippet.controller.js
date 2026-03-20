@@ -59,3 +59,52 @@ export const getSnippetDetail = async(req, res)=>{
         res.status(500).json({message: "server error"});
     }
 }
+
+export const createSnippet = async(req, res)=>{
+    try{
+        const {
+            title,
+            shortDescription,
+            installCommand,
+            code,
+            explanation,
+            documentationUrl,
+            tags,
+            frameworkId,
+            categoryId,
+        } = req.body;
+
+        if(!title || !code || !frameworkId || !categoryId){
+            return res.status(400).json({
+                message: "Title, code, framework and category are required"
+            });
+        }
+
+        const framework = await Framework.findById(frameworkId);
+        if(!framework){
+            return res.status(404).json({ message: "Framework not found"});
+        }
+
+        const category = await Category.findById(categoryId);
+        if(!category){
+            return res.status(404).json({ message: "Category not found"});
+        }
+
+        const snippet = await Snippet.create({
+            title,
+            shortDescription,
+            installCommand,
+            code,
+            explanation,
+            documentationUrl,
+            tags,
+            framework: frameworkId,
+            category: categoryId,
+        });
+
+        res.status(201).json(snippet);
+    }catch(error){
+        console.error("create snippet error: ", error);
+        res.status(500).json({message: "Server error"});
+    }
+}

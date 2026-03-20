@@ -22,7 +22,7 @@ app.get("/", (req, res)=>{
 
 app.use("/api/frameworks", frameworkRoutes);
 app.use("/api/frameworks", categoryRoutes);
-app.use("/api/frameworks", snippetRoutes);
+app.use("/api/snippets", snippetRoutes);
 app.use("/api/auth", authRoutes);
 app.get("/api/protected", verifyJWT, (req, res) => {
   res.json({ message: "You are authenticated", user: req.user });

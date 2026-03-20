@@ -13,6 +13,10 @@ import SnippetList from "../features/snippets/pages/SnippetList";
 import SnippetDetail from "../features/snippets/pages/SnippetDetail";
 import Layout from "../layout/Layout";
 import PublicRoute from "../features/auth/PublicRoute";
+import AdminRoute from "../features/auth/AdminRoute";
+import AdminDashboard from "../features/auth/pages/AdminDashboard";
+import CreateFramework from "../features/admin/pages/createFramework";
+import CreateCategory from "../features/admin/pages/CreateCategory";
 
 export const router = createBrowserRouter([
     {
@@ -67,6 +71,30 @@ export const router = createBrowserRouter([
                 path: "/frameworks/:slug/:categorySlug/:integrationSlug",
                 element: <SnippetDetail />
             },
+            {
+                path: "admin",
+                element: (
+                    <AdminRoute>
+                        <AdminDashboard />
+                    </AdminRoute>
+                )
+            },
+            {
+                path: "admin/create-framework",
+                element:(
+                    <AdminRoute>
+                        <CreateFramework />
+                    </AdminRoute>
+                )
+            },
+            {
+                path: "admin/create-category",
+                element: (
+                    <AdminRoute>
+                        <CreateCategory />
+                    </AdminRoute>
+                )
+            }
         ]
     },
     

@@ -5,7 +5,6 @@ const categorySchema = new mongoose.Schema({
     name:{
         type: String,
         required: true,
-        unique: true,
         trim: true,
     },
     slug:{
@@ -16,6 +15,12 @@ const categorySchema = new mongoose.Schema({
     description:{
         type: String,
     },
+
+    framework:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Framework",
+        required: true,
+    }
 }, {timestamps: true});
 
 categorySchema.pre("save", function(){

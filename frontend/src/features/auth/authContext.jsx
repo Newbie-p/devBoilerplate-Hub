@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import api from "../../services/api";
 
 const AuthContext = createContext();
@@ -12,7 +13,10 @@ export function AuthProvider({ children }) {
 
     if (token) {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      setUser({ token });
+      const decoded = jwtDecode(token);
+      setUser({ token,
+        role: decoded.role,
+       });
     }
 
     setLoading(false);
@@ -21,7 +25,11 @@ export function AuthProvider({ children }) {
   const login = (token) => {
     localStorage.setItem("token", token);
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    setUser({ token });
+
+    const decoded = jwtDecode(token)
+    setUser({ token,
+      role: decoded.role,
+     });
   };
 
   const logout = () => {

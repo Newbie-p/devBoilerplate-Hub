@@ -13,3 +13,8 @@ export const getSnippetDetail = async(
     const response = await api.get(`/snippets/${frameworkSlug}/${categorySlug}/${integrationSlug}`);
     return response.data;
 }
+
+export const deleteSnippet = async(id) =>{
+    const res = await api.delete(`/snippets/${id}`);
+    return res.data;
+}

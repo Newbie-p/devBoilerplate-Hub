@@ -1,14 +1,31 @@
-import { getSnippetDetail } from "../snippetService";
+import { getSnippetDetail, deleteSnippet } from "../snippetService";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import CodeBlock from "../../../components/CodeBlock";
 import SkeletonCard from "../../../components/SkeletonCard";
+import { useAuth } from "../../auth/authContext";
 
 export default function SnippetDetail() {
   const { slug, categorySlug, integrationSlug } = useParams();
 
   const [snippet, setSnippet] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleDelete = async() => {
+    const confirmDelete = window.confirm("Are you sure?");
+
+    if(!confirmDelete) return;
+
+    try{
+      await deleteSnippet(snippet._id);
+      navigate(`/frameworks/${frameworkSlug}/${categorySlug}`, {replace: true});
+    }catch(error){
+      alert("Delete failed");
+    }
+  }
 
   useEffect(() => {
     const fetchSnippet = async () => {
@@ -83,6 +100,15 @@ export default function SnippetDetail() {
             </span>
           ))}
         </div>
+      )}
+
+      {user?.role === "admin" && (
+        <button
+          onClick={handleDelete}
+          className="bg-red-500 text-white px-4 py-2 rounded mt -4"
+        >
+          Delete Snippet
+        </button>
       )}
     </div>
   );

@@ -108,3 +108,19 @@ export const createSnippet = async(req, res)=>{
         res.status(500).json({message: "Server error"});
     }
 }
+
+export const deleteSnippet = async(req, res)=>{
+    try{
+        const {id} = req.params;
+        const snippet = await Snippet.findByIdAndDelete(id);
+
+        if(!snippet){
+            return res.status(404).json({message: "Snippet not found"});
+        }
+
+        res.status(200).json({message: "Snippet deleted successfully"});
+    }catch(error){
+        console.error("Delete snippet error:", error);
+        res.status(500).json({ message: "Server error"});
+    }
+}

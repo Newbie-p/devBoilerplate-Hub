@@ -1,7 +1,7 @@
 import api from "../../services/api";
 
 export const getSnippets = async(frameworkSlug, categorySlug) =>{
-    const response = await api.get(`/frameworks/${frameworkSlug}/${categorySlug}/snippets`);
+    const response = await api.get(`/snippets/${frameworkSlug}/${categorySlug}/snippets`);
     return response.data;
 }
 
@@ -10,6 +10,6 @@ export const getSnippetDetail = async(
     categorySlug,
     integrationSlug
 ) =>{
-    const response = await api.get(`/frameworks/${frameworkSlug}/${categorySlug}/${integrationSlug}`);
+    const response = await api.get(`/snippets/${frameworkSlug}/${categorySlug}/${integrationSlug}`);
     return response.data;
 }

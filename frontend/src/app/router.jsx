@@ -17,6 +17,7 @@ import AdminRoute from "../features/auth/AdminRoute";
 import AdminDashboard from "../features/auth/pages/AdminDashboard";
 import CreateFramework from "../features/admin/pages/createFramework";
 import CreateCategory from "../features/admin/pages/CreateCategory";
+import CreateSnippet from "../features/admin/pages/CreateSnippet";
 
 export const router = createBrowserRouter([
     {
@@ -92,6 +93,14 @@ export const router = createBrowserRouter([
                 element: (
                     <AdminRoute>
                         <CreateCategory />
+                    </AdminRoute>
+                )
+            },
+            {
+                path: "admin/create-snippet",
+                element:(
+                    <AdminRoute>
+                        <CreateSnippet />
                     </AdminRoute>
                 )
             }

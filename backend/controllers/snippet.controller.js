@@ -11,7 +11,7 @@ export const getSnippetByFrameworkAndCategory = async(req, res)=>{
             return res.status(404).json({message : "framework not found"});
         }
 
-        const category = await Category.findOne({slug: categorySlug});
+        const category = await Category.findOne({slug: categorySlug, framework: framework._id});
         if(!category){
             return res.status(404).json({message: "category not found"});
         }

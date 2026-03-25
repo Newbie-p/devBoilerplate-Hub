@@ -41,3 +41,23 @@ export const createCategory = async(req,res)=>{
         res.status(500).json({message: "Server error"});
     }
 };
+
+export const getCategoriesByFrameworkId = async(req, res) =>{
+    try{
+        const { frameworkId } = req.query;
+
+        if(!frameworkId){
+            return res.status(400).json({ message: "Framework ID is required"});
+        }
+
+        const categories = await Category.find({
+            framework: frameworkId,
+        }).select("name _id");
+
+        res.status(200).json(categories);
+
+    }catch(error){
+        console.error("Error fetching categories : ", error);
+        res.status(500).json({message: "server error"});
+    }
+}

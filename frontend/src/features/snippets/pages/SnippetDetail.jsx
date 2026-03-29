@@ -110,6 +110,17 @@ export default function SnippetDetail() {
           Delete Snippet
         </button>
       )}
+
+      {user?.role === "admin" && (
+        <button
+          onClick={()=>{
+            navigate(`/admin/edit-snippet/${snippet._id}`)
+          }}
+          className="bg-blue-500 text-white px-4 py-2 rounded mt-4 ml-2"
+        >
+          Edit Snippet
+        </button>
+      )}
     </div>
   );
 }

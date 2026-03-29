@@ -124,3 +124,38 @@ export const deleteSnippet = async(req, res)=>{
         res.status(500).json({ message: "Server error"});
     }
 }
+
+export const getSnippetById = async(req, res)=>{
+    try{
+        const snippet = await Snippet.findById(req.params.id);
+
+        if(!snippet){
+            return res.status(404).json({message: "Snippet not found"});
+        }
+
+        res.status(200).json(snippet);
+    }catch(error){
+        console.error(error);
+        res.status(500).json({message: "Server error"});
+    }
+}
+
+export const updateSnippet = async(req, res)=>{
+    try{
+        const { id} = req.params;
+        const updated = await Snippet.findByIdAndUpdate(
+            id,
+            req.body,
+            {new: true}
+        );
+
+        if(!updated){
+            return res.status(404).json({ message: "Snippet not found"});
+        }
+
+        res.status(200).json(updated);
+    }catch(error){
+        console.error("update snippet error: ", error);
+        res.status(500).json({message: "server error"});
+    }
+}

@@ -103,6 +103,14 @@ export const router = createBrowserRouter([
                         <CreateSnippet />
                     </AdminRoute>
                 )
+            },
+            {
+                path: "admin/edit-snippet/:id",
+                element:(
+                    <AdminRoute>
+                        <CreateSnippet />
+                    </AdminRoute>
+                )
             }
         ]
     },
